@@ -1,4 +1,4 @@
-import { emptySplitApi as api } from "./emptyApi";
+import { baseApi } from "./baseApi";
 export const addTagTypes = [
   "ping",
   "simple",
@@ -14,7 +14,7 @@ export const addTagTypes = [
   "trending",
   "global",
 ] as const;
-const injectedRtkApi = api
+const injectedRtkApi = baseApi
   .enhanceEndpoints({
     addTagTypes,
   })
