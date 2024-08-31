@@ -1,4 +1,7 @@
 import { baseApi } from "./baseApi";
+
+const UNIX_TO_CURRENT_TIME_MILLIS = 1000;
+
 export const addTagTypes = [
   "ping",
   "simple",
@@ -42,10 +45,24 @@ const injectedRtkApi = baseApi
         }),
         transformResponse: (response: GetSimplePriceApiResponse, _meta, arg) => {
           const coinId = arg.ids;
-          return [response[coinId]];
+          return [
+            {
+              ...response[coinId],
+              last_updated_at: response[coinId].last_updated_at * UNIX_TO_CURRENT_TIME_MILLIS
+            }
+          ];
         },
         merge: (currentCache, newData) => { 
-          currentCache.push(...newData);
+          const staleCache = new Set<number>();
+          currentCache.forEach((price) => {
+            staleCache.add(price.last_updated_at);
+          });
+
+          newData.forEach((price) => {
+            if (!staleCache.has(price.last_updated_at)) {
+              currentCache.push(price);
+            }
+          });
         },
         providesTags: ["simple"],
       }),

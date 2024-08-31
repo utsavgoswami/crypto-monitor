@@ -13,9 +13,8 @@ export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
         days,
         precision: "2"
     });
-
     // Get current price of the coin every 60 seconds
-    const { data: simplePriceInfo, isFetching: isFetchingSimplePrice, isError: isErrorSimplePrice, error: errorSimplePrice } = useGetSimplePriceQuery({
+    const { currentData: simplePriceInfo, isFetching: isFetchingSimplePrice, isError: isErrorSimplePrice, error: errorSimplePrice } = useGetSimplePriceQuery({
         ids: id,
         vsCurrencies: vsCurrency,
         includeLastUpdatedAt: "true",
