@@ -20,12 +20,12 @@ const injectedRtkApi = baseApi
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getPing: build.query<GetPingApiResponse, GetPingApiArg>({
+      getPing: build.query<GetPingApiResponse[], GetPingApiArg>({
         query: () => ({ url: `/ping` }),
         providesTags: ["ping"],
       }),
       getSimplePrice: build.query<
-        GetSimplePriceApiResponse,
+        SimplePriceInfo[],
         GetSimplePriceApiArg
       >({
         query: (queryArg) => ({
@@ -40,6 +40,13 @@ const injectedRtkApi = baseApi
             precision: queryArg.precision,
           },
         }),
+        transformResponse: (response: GetSimplePriceApiResponse, _meta, arg) => {
+          const coinId = arg.ids;
+          return [response[coinId]];
+        },
+        merge: (currentCache, newData) => { 
+          currentCache.push(...newData);
+        },
         providesTags: ["simple"],
       }),
       getSimpleTokenPriceById: build.query<
@@ -392,7 +399,17 @@ const injectedRtkApi = baseApi
 export { injectedRtkApi as coinGeckoApi };
 export type GetPingApiResponse = unknown;
 export type GetPingApiArg = void;
-export type GetSimplePriceApiResponse = unknown;
+export type GetSimplePriceApiResponse = {
+  [coinId: string]: SimplePriceInfo;
+};
+
+export type SimplePriceInfo = {
+  usd: number,
+  usd_market_cap: number,
+  usd_24h_vol: number,
+  usd_24h_change: number,
+  last_updated_at: number,
+}
 export type GetSimplePriceApiArg = {
   /** id of coins, comma-separated if querying more than 1 coin
    *refers to <b>`coins/list`</b> */
