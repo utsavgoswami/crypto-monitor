@@ -505,7 +505,12 @@ export type GetCoinsByIdHistoryApiArg = {
   /** Set to false to exclude localized languages in response */
   localization?: string;
 };
-export type GetCoinsByIdMarketChartApiResponse = unknown;
+export type GetCoinsByIdMarketChartApiResponse = {
+  prices: [number, number][];
+  market_caps: [number, number][];
+  total_volumes: [number, number][];
+};
+
 export type GetCoinsByIdMarketChartApiArg = {
   /** pass the coin id (can be obtained from /coins) eg. bitcoin */
   id: string;

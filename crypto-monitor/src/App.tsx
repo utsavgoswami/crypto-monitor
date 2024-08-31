@@ -1,9 +1,9 @@
 import './App.css'
-
+import { LiveChart } from './components/LiveChart'
 function App() {
   return (
     <div>
-      <h1>Hello World</h1>
+      <LiveChart id="bitcoin" vsCurrency="usd" days="365" />
     </div>
   )
 }
