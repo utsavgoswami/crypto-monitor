@@ -20,7 +20,7 @@ function App() {
     <div>
       <LiveChart id="bitcoin" vsCurrency="usd" days="365" />
       <Button>Click me</Button>
-      <BitcoinPriceChart data={generateData()} />
+      {/* <BitcoinPriceChart data={generateData()} /> */}
     </div>
   )
 }

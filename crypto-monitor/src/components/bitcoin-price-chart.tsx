@@ -5,7 +5,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-interface DataPoint {
+export interface DataPoint {
   price: number;
   time: number;
 }
@@ -74,7 +74,7 @@ export function BitcoinPriceChart({ data }: BitcoinPriceChartProps) {
             />
           </LineChart>
         </ResponsiveContainer>
-        <div className="flex justify-center mt-4 space-x-2">
+        {/* <div className="flex justify-center mt-4 space-x-2">
           {data.map((entry, index) => (
             <Button
               key={index}
@@ -85,7 +85,7 @@ export function BitcoinPriceChart({ data }: BitcoinPriceChartProps) {
               {new Date(entry.time).toLocaleDateString('en-US', { month: 'short' })}
             </Button>
           ))}
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );
