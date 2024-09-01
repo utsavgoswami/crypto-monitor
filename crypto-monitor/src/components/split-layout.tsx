@@ -31,7 +31,7 @@ export function SplitLayout() {
 
       {/* Main Content (70%) */}
       <div className="flex-1">
-        <ScrollArea className="h-full">
+        <ScrollArea className="p-3 h-full">
           <div className="grid grid-cols-2 gap-2">
             {/* Add your main content here */}
             <LiveChart id="bitcoin" vsCurrency="usd" days="365" />
