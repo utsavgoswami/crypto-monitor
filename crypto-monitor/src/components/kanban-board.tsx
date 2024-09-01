@@ -73,7 +73,7 @@ export function KanbanBoard() {
   return (
     <div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-2 m-2">
           {Object.entries(columns).map(([columnId, column]) => (
             <div key={columnId} className="flex-1 h-screen min-w-[250px]">
               <Card className="h-full">
