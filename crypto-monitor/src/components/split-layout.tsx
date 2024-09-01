@@ -22,17 +22,14 @@ export function SplitLayout() {
     possibleCoins: {
       name: "Possible Coins",
       items: [
-        { id: "coin1", content: "Bitcoin" },
-        { id: "coin2", content: "Ethereum" },
-        { id: "coin3", content: "Cardano" },
+        { id: "bitcoin", content: "Bitcoin" },
+        { id: "ethereum", content: "Ethereum" },
+        { id: "cardano", content: "Cardano" },
       ]
     },
     watchlist: {
       name: "Watchlist",
-      items: [
-        { id: "coin4", content: "Polkadot" },
-        { id: "coin5", content: "Solana" },
-      ]
+      items: []
     }
   })
   return (
