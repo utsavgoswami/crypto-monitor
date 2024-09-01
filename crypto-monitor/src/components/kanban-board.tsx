@@ -14,25 +14,12 @@ interface ColumnData {
   }
 }
 
-export function KanbanBoard() {
-  const [columns, setColumns] = React.useState<ColumnData>({
-    possibleCoins: {
-      name: "Possible Coins",
-      items: [
-        { id: "coin1", content: "Bitcoin" },
-        { id: "coin2", content: "Ethereum" },
-        { id: "coin3", content: "Cardano" },
-      ]
-    },
-    watchlist: {
-      name: "Watchlist",
-      items: [
-        { id: "coin4", content: "Polkadot" },
-        { id: "coin5", content: "Solana" },
-      ]
-    }
-  })
+interface KanbanBoardProps {
+  columns: ColumnData,
+  setColumns: React.Dispatch<React.SetStateAction<ColumnData>>
+}
 
+export function KanbanBoard({ columns, setColumns }: KanbanBoardProps) {
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
     const { source, destination } = result
