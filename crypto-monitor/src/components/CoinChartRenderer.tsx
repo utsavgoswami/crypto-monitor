@@ -1,22 +1,18 @@
 'use client'
-
-import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 export interface DataPoint {
   price: number;
   time: number;
 }
 
-interface BitcoinPriceChartProps {
+interface CoinChartRendererProps {
+  name: string;
   data: DataPoint[];
 }
 
-export function BitcoinPriceChart({ data }: BitcoinPriceChartProps) {
-  const [focusBar, setFocusBar] = useState<number | null>(null);
-
+export function CoinChartRenderer({ name, data }: CoinChartRendererProps) {
   const formatXAxis = (tickItem: number) => {
     return new Date(tickItem).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
   };
@@ -33,19 +29,11 @@ export function BitcoinPriceChart({ data }: BitcoinPriceChartProps) {
   return (
     <Card className="mx-auto w-full max-w-4xl">
       <CardHeader>
-        <CardTitle>Bitcoin Price Chart (1 Year)</CardTitle>
+        <CardTitle>{name} Price Chart (1 Year)</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            onMouseMove={(state) => {
-              if (state.isTooltipActive) {
-                setFocusBar(state.activeTooltipIndex ?? null);
-              } else {
-                setFocusBar(null);
-              }
-            }}
-          >
+          <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
               dataKey="time" 
@@ -66,7 +54,7 @@ export function BitcoinPriceChart({ data }: BitcoinPriceChartProps) {
             <Line 
               type="monotone" 
               dataKey="price" 
-              name="Bitcoin Price"
+              name={`${name} Price`}
               stroke="hsl(var(--primary))" 
               strokeWidth={2}
               dot={false}

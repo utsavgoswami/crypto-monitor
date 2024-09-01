@@ -1,5 +1,5 @@
 import { useGetCoinsByIdMarketChartQuery, useGetSimplePriceQuery } from "../store/coinGeckoApi"
-import { BitcoinPriceChart, DataPoint } from "./bitcoin-price-chart"
+import { CoinChartRenderer, DataPoint } from "./CoinChartRenderer"
 
 interface LiveChartProps {
     id: string
@@ -16,7 +16,7 @@ export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
     });
 
     // Get current price of the coin every 60 seconds
-    const { currentData: livePricingData, isFetching: isFetchingSimplePrice, isError: isErrorSimplePrice, error: errorSimplePrice } = useGetSimplePriceQuery({
+    const { currentData: livePricingData, isFetching: isFetchingSimplePrice, isError: isErrorSimplePrice } = useGetSimplePriceQuery({
         ids: id,
         vsCurrencies: vsCurrency,
         includeLastUpdatedAt: "true",
@@ -45,7 +45,7 @@ export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
             {isError || isErrorSimplePrice && <div>Error: {JSON.stringify(error)}</div>}
             {isFetching || isFetchingSimplePrice && <div>Loading...</div>}
             {/* {currentData && <div>{JSON.stringify(currentData)}</div>} */}
-            {dataPoints && <BitcoinPriceChart data={dataPoints} />}
+            {dataPoints && <CoinChartRenderer data={dataPoints} name={"Bitcoin"} />}
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import './App.css'
-import { BitcoinPriceChart } from './components/bitcoin-price-chart'
+import { CoinChartRenderer } from './components/CoinChartRenderer'
 import { LiveChart } from './components/LiveChart'
 import { Button } from '@/components/ui/button'
 
