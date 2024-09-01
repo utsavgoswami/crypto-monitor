@@ -4,10 +4,11 @@ import { CoinChartRenderer, DataPoint } from "./CoinChartRenderer"
 interface LiveChartProps {
     id: string
     vsCurrency: string
-    days: string
+    days: string,
+    onError: (coinId: string) => void
 }
 
-export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
+export const LiveChart = ({ id, vsCurrency, days, onError }: LiveChartProps) => {
     const { currentData: historicalPricingData, isFetching, isError, error } = useGetCoinsByIdMarketChartQuery({
         id,
         vsCurrency,
@@ -42,6 +43,10 @@ export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
     }) || [];
 
     const dataPoints = [...historicalDataPoints, ...liveDataPoints];
+
+    if (isError) {
+        onError(id);
+    }
 
     return (
         <div>

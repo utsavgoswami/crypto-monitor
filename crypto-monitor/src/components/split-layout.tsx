@@ -22,16 +22,30 @@ export function SplitLayout() {
     possibleCoins: {
       name: "Possible Coins",
       items: [
-        { id: "bitcoin", content: "Bitcoin" },
+        // { id: "bitcoin", content: "Bitcoin" },
         { id: "ethereum", content: "Ethereum" },
         { id: "cardano", content: "Cardano" },
       ]
     },
     watchlist: {
       name: "Watchlist",
-      items: []
+      items: [
+        { id: "bitcoin", content: "Bitcoin" },
+      ]
     }
   })
+
+  const handleChartDataFetchFailure = (coinId: string) => {
+    const updatedColumns = { ...columns };
+    const match = updatedColumns.watchlist.items.find(item => item.id === coinId);
+
+    if (match) {
+      updatedColumns.watchlist.items = updatedColumns.watchlist.items.filter(item => item.id !== coinId);
+      updatedColumns.possibleCoins.items.push({ id: coinId, content: match.content });
+    }
+    setColumns(updatedColumns);
+  }
+
   return (
     <div className="flex h-screen">
       {/* Left Sidebar (30%) */}
@@ -48,7 +62,7 @@ export function SplitLayout() {
             {/* Add your main content here */}
             {
               columns.watchlist.items.map((item) => (
-                <LiveChart id={item.id} vsCurrency="usd" days="365" />
+                <LiveChart key={item.id} id={item.id} vsCurrency="usd" days="365" onError={handleChartDataFetchFailure} />
               ))
             }
           </div>
