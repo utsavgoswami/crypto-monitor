@@ -21,7 +21,7 @@ export function CoinChartRenderer({ name, data }: CoinChartRendererProps) {
     return `$${(tickItem / 1000).toFixed(0)}k`;
   };
 
-  const formatTooltip = (value: number, name: string, props: { payload: { time: number } }) => {
+  const formatTooltip = (value: number, _name: string, props: { payload: { time: number } }) => {
     const date = new Date(props.payload.time).toLocaleDateString('en-US', { month: 'long', year: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' });
     return [`$${value.toFixed(2)}`, `Date: ${date}`];
   };
