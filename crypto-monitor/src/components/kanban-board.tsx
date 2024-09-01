@@ -81,7 +81,7 @@ export function KanbanBoard() {
                   <CardTitle>{column.name}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Droppable droppableId={columnId}>
+                  <Droppable key={columnId} droppableId={columnId}>
                     {(provided) => (
                       <ul
                         {...provided.droppableProps}
