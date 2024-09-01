@@ -4,6 +4,8 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { LiveChart } from "./LiveChart"
 import { KanbanBoard } from "./kanban-board"
 import React from "react"
+import { useAppDispatch } from "@/hooks"
+import { clearErrorMessage, setErrorMessage } from "@/store/store"
 
 interface CoinItem {
   id: string
@@ -18,11 +20,12 @@ export interface ColumnData {
 }
 
 export function SplitLayout() {
+  const dispatch = useAppDispatch();
   const [columns, setColumns] = React.useState<ColumnData>({
     possibleCoins: {
       name: "Possible Coins",
       items: [
-        // { id: "bitcoin", content: "Bitcoin" },
+        { id: "bitcoin", content: "Bitcoin" },
         { id: "ethereum", content: "Ethereum" },
         { id: "cardano", content: "Cardano" },
       ]
@@ -30,7 +33,6 @@ export function SplitLayout() {
     watchlist: {
       name: "Watchlist",
       items: [
-        { id: "bitcoin", content: "Bitcoin" },
       ]
     }
   })
@@ -44,6 +46,10 @@ export function SplitLayout() {
       updatedColumns.possibleCoins.items.push({ id: coinId, content: match.content });
     }
     setColumns(updatedColumns);
+    dispatch(setErrorMessage(`Failed to fetch data for ${coinId}`));
+    setTimeout(() => {
+      dispatch(clearErrorMessage());
+    }, 5000);
   }
 
   return (
