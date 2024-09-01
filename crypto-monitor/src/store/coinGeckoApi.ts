@@ -498,7 +498,16 @@ export type GetCoinsMarketsApiArg = {
   /** <b>full</b> or any value between 0 - 18 to specify decimal place for currency price value */
   precision?: string;
 };
-export type GetCoinsByIdApiResponse = unknown;
+export type GetCoinsByIdApiResponse = {
+  id: string;
+  symbol: string;
+  name: string;
+  image: {
+    thumb: string;
+    small: string;
+    large: string;
+  };
+};
 export type GetCoinsByIdApiArg = {
   /** pass the coin id (can be obtained from /coins) eg. bitcoin */
   id: string;

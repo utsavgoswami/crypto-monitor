@@ -1,4 +1,4 @@
-import { useGetCoinsByIdMarketChartQuery, useGetSimplePriceQuery } from "../store/coinGeckoApi"
+import { useGetCoinsByIdMarketChartQuery, useGetCoinsByIdQuery, useGetSimplePriceQuery } from "../store/coinGeckoApi"
 import { CoinChartRenderer, DataPoint } from "./CoinChartRenderer"
 
 interface LiveChartProps {
@@ -13,6 +13,10 @@ export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
         vsCurrency,
         days,
         precision: "2"
+    });
+
+    const { currentData: coinData, isFetching: isFetchingCoinData, isError: isErrorCoinData } = useGetCoinsByIdQuery({
+        id
     });
 
     // Get current price of the coin every 60 seconds
@@ -30,7 +34,7 @@ export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
         time: price[0]
     })) || [];
 
-    const liveDataPoints: DataPoint[] = livePricingData?.map((priceInfo) => {
+    const liveDataPoints: DataPoint[] = livePricingData?.map((priceInfo) => { 
         return {
             price: priceInfo.usd,
             time: priceInfo.last_updated_at
@@ -42,10 +46,9 @@ export const LiveChart = ({ id, vsCurrency, days }: LiveChartProps) => {
     return (
         <div>
             <h1>Live Chart</h1>
-            {isError || isErrorSimplePrice && <div>Error: {JSON.stringify(error)}</div>}
-            {isFetching || isFetchingSimplePrice && <div>Loading...</div>}
-            {/* {currentData && <div>{JSON.stringify(currentData)}</div>} */}
-            {dataPoints && <CoinChartRenderer data={dataPoints} name={"Bitcoin"} />}
+            {isError || isErrorSimplePrice || isErrorCoinData && <div>Error: {JSON.stringify(error)}</div>}
+            {isFetching || isFetchingSimplePrice || isFetchingCoinData && <div>Loading...</div>}
+            {dataPoints && coinData && <CoinChartRenderer data={dataPoints} name={coinData.name} />}
         </div>
     )
 }
