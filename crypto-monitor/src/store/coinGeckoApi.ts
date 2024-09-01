@@ -1,4 +1,7 @@
 import { baseApi } from "./baseApi";
+
+const UNIX_TO_CURRENT_TIME_MILLIS = 1000;
+
 export const addTagTypes = [
   "ping",
   "simple",
@@ -20,12 +23,12 @@ const injectedRtkApi = baseApi
   })
   .injectEndpoints({
     endpoints: (build) => ({
-      getPing: build.query<GetPingApiResponse, GetPingApiArg>({
+      getPing: build.query<GetPingApiResponse[], GetPingApiArg>({
         query: () => ({ url: `/ping` }),
         providesTags: ["ping"],
       }),
       getSimplePrice: build.query<
-        GetSimplePriceApiResponse,
+        SimplePriceInfo[],
         GetSimplePriceApiArg
       >({
         query: (queryArg) => ({
@@ -40,6 +43,27 @@ const injectedRtkApi = baseApi
             precision: queryArg.precision,
           },
         }),
+        transformResponse: (response: GetSimplePriceApiResponse, _meta, arg) => {
+          const coinId = arg.ids;
+          return [
+            {
+              ...response[coinId],
+              last_updated_at: response[coinId].last_updated_at * UNIX_TO_CURRENT_TIME_MILLIS
+            }
+          ];
+        },
+        merge: (currentCache, newData) => { 
+          const staleCache = new Set<number>();
+          currentCache.forEach((price) => {
+            staleCache.add(price.last_updated_at);
+          });
+
+          newData.forEach((price) => {
+            if (!staleCache.has(price.last_updated_at)) {
+              currentCache.push(price);
+            }
+          });
+        },
         providesTags: ["simple"],
       }),
       getSimpleTokenPriceById: build.query<
@@ -392,7 +416,17 @@ const injectedRtkApi = baseApi
 export { injectedRtkApi as coinGeckoApi };
 export type GetPingApiResponse = unknown;
 export type GetPingApiArg = void;
-export type GetSimplePriceApiResponse = unknown;
+export type GetSimplePriceApiResponse = {
+  [coinId: string]: SimplePriceInfo;
+};
+
+export type SimplePriceInfo = {
+  usd: number,
+  usd_market_cap: number,
+  usd_24h_vol: number,
+  usd_24h_change: number,
+  last_updated_at: number,
+}
 export type GetSimplePriceApiArg = {
   /** id of coins, comma-separated if querying more than 1 coin
    *refers to <b>`coins/list`</b> */
@@ -505,7 +539,12 @@ export type GetCoinsByIdHistoryApiArg = {
   /** Set to false to exclude localized languages in response */
   localization?: string;
 };
-export type GetCoinsByIdMarketChartApiResponse = unknown;
+export type GetCoinsByIdMarketChartApiResponse = {
+  prices: [number, number][];
+  market_caps: [number, number][];
+  total_volumes: [number, number][];
+};
+
 export type GetCoinsByIdMarketChartApiArg = {
   /** pass the coin id (can be obtained from /coins) eg. bitcoin */
   id: string;
