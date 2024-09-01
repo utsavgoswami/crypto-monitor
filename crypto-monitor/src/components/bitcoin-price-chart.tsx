@@ -26,7 +26,7 @@ export function BitcoinPriceChart({ data }: BitcoinPriceChartProps) {
   };
 
   const formatTooltip = (value: number, name: string, props: { payload: { time: number } }) => {
-    const date = new Date(props.payload.time).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const date = new Date(props.payload.time).toLocaleDateString('en-US', { month: 'long', year: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' });
     return [`$${value.toFixed(2)}`, `Date: ${date}`];
   };
 
