@@ -2,7 +2,7 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { LiveChart } from "./LiveChart"
-import { KanbanBoard } from "./kanban-board"
+import { KanbanBoard } from "./KanbanBoard"
 import React from "react"
 import { useAppDispatch } from "@/hooks"
 import { clearErrorMessage, setErrorMessage } from "@/store/store"

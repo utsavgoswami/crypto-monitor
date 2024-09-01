@@ -1,5 +1,5 @@
 import './App.css'
-import { SplitLayout } from './components/split-layout'
+import { SplitLayout } from './components/SplitLayout'
 import { ErrorNotification } from './components/ErrorNotification'
 import { useAppSelector } from './hooks';
 
