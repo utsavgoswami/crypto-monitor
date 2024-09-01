@@ -46,8 +46,11 @@ export function SplitLayout() {
         <ScrollArea className="p-3">
           <div className="grid grid-cols-2 gap-2">
             {/* Add your main content here */}
-            <LiveChart id="bitcoin" vsCurrency="usd" days="365" />
-            <LiveChart id="ethereum" vsCurrency="usd" days="365" />
+            {
+              columns.watchlist.items.map((item) => (
+                <LiveChart id={item.id} vsCurrency="usd" days="365" />
+              ))
+            }
           </div>
         </ScrollArea>
       </div>
