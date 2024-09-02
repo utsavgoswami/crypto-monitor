@@ -1,10 +1,16 @@
 import './App.css'
-import { LiveChart } from './components/LiveChart'
+import { SplitLayout } from './components/SplitLayout'
+import { ErrorNotification } from './components/ErrorNotification'
+import { useAppSelector } from './hooks';
+
 function App() {
+  const errorMessage = useAppSelector((state) => state.error.message);
+
   return (
-    <div>
-      <LiveChart id="bitcoin" vsCurrency="usd" days="365" />
-    </div>
+    <>
+      {errorMessage.length > 0 && <ErrorNotification errorMessage={errorMessage} />}
+      <SplitLayout />
+    </>
   )
 }
 
