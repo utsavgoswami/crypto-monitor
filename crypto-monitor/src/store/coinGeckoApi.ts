@@ -1,6 +1,6 @@
 import { getCacheKey } from "@/lib/utils";
 import { baseApi } from "./baseApi";
-import { Redis } from "@upstash/redis";
+import { Redis } from "@upstash/redis/cloudflare";
 
 const redis = new Redis({
   url: import.meta.env.VITE_UPSTASH_REDIS_REST_URL,
