@@ -1,7 +1,6 @@
+import { getCacheKey } from "@/lib/utils";
 import { baseApi } from "./baseApi";
 import { Redis } from "@upstash/redis";
-
-console.log("Redis URL: ", import.meta.env.VITE_UPSTASH_REDIS_REST_URL);
 
 const redis = new Redis({
   url: import.meta.env.VITE_UPSTASH_REDIS_REST_URL,
@@ -171,15 +170,38 @@ const injectedRtkApi = baseApi
         GetCoinsByIdMarketChartApiResponse,
         GetCoinsByIdMarketChartApiArg
       >({
-        query: (queryArg) => ({
-          url: `/coins/${queryArg.id}/market_chart`,
-          params: {
-            vs_currency: queryArg.vsCurrency,
-            days: queryArg.days,
-            interval: queryArg.interval,
-            precision: queryArg.precision,
-          },
-        }),
+        queryFn: async (arg, _api, _extraOptions, baseQuery) => {
+          const cacheKey = getCacheKey(arg.id);
+          const cachedData = await redis.get(cacheKey);
+
+          if (cachedData) {
+            return { data: cachedData as GetCoinsByIdMarketChartApiResponse };
+          }
+
+          const fetchedData = await baseQuery({
+            url: `/coins/${arg.id}/market_chart`,
+            params: {
+              vs_currency: arg.vsCurrency,
+              days: arg.days,
+              interval: arg.interval,
+              precision: arg.precision,
+            },
+          });
+
+          if (fetchedData.error) {
+            return {
+              error: fetchedData.error,
+            }
+          }
+
+          if (fetchedData.data) {
+            redis.set(cacheKey, fetchedData.data, { ex: 86400 });
+          }
+
+          return {
+            data: fetchedData.data as GetCoinsByIdMarketChartApiResponse,
+          }
+        },
         providesTags: ["coins"],
       }),
       getCoinsByIdMarketChartRange: build.query<
