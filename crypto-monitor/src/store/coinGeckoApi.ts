@@ -1,5 +1,7 @@
 import { getCacheKey } from "@/lib/utils";
 import { baseApi } from "./baseApi";
+
+// Cloudflare import works across all Hosting Providers (ex: Vercel, Netlify, Cloudflare)
 import { Redis } from "@upstash/redis/cloudflare";
 
 const redis = new Redis({
