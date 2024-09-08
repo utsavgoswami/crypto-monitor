@@ -1,4 +1,12 @@
 import { baseApi } from "./baseApi";
+import { Redis } from "@upstash/redis";
+
+console.log("Redis URL: ", import.meta.env.VITE_UPSTASH_REDIS_REST_URL);
+
+const redis = new Redis({
+  url: import.meta.env.VITE_UPSTASH_REDIS_REST_URL,
+  token: import.meta.env.VITE_UPSTASH_REDIS_REST_TOKEN,
+});
 
 const UNIX_TO_CURRENT_TIME_MILLIS = 1000;
 
