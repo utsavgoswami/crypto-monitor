@@ -8,7 +8,7 @@ const redis = new Redis({
 });
 
 const UNIX_TO_CURRENT_TIME_MILLIS = 1000;
-
+  
 export const addTagTypes = [
   "ping",
   "simple",

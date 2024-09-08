@@ -6,7 +6,10 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   define: {
-    'process.env': {},
+    'process.env': {
+      VITE_UPSTASH_REDIS_REST_URL: process.env.VITE_UPSTASH_REDIS_REST_URL,
+      VITE_UPSTASH_REDIS_REST_TOKEN: process.env.VITE_UPSTASH_REDIS_REST_TOKEN,
+    },
   },
   resolve: {
     alias: {
