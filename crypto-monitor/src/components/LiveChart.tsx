@@ -42,7 +42,7 @@ export const LiveChart = ({ id, vsCurrency, days, onError }: LiveChartProps) => 
         }
     }) || [];
 
-    const dataPoints = [...historicalDataPoints, ...liveDataPoints];
+    const dataPoints = [...historicalDataPoints.slice(0, -1), ...liveDataPoints];
 
     if (isError) {
         onError(id);
